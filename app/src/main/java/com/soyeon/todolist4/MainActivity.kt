@@ -2,8 +2,10 @@ package com.soyeon.todolist4
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
@@ -11,6 +13,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
     var todoList: ArrayList<Todo> = arrayListOf()
     var todoListAdapter: TodoAdapter? = null
+
+    lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +25,30 @@ class MainActivity : AppCompatActivity() {
         }
 
         initRecyclerView()
+        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        navView.setNavigationItemSelectedListener {
+            when(it.itemId) {
+                R.id.miItem1 -> Toast.makeText(applicationContext,
+                        "Clicked Item 1", Toast.LENGTH_SHORT).show()
+                R.id.miItem2 -> Toast.makeText(applicationContext,
+                        "Clicked Item 2", Toast.LENGTH_SHORT).show()
+                R.id.miItem3 -> Toast.makeText(applicationContext,
+                        "Clicked Item 3", Toast.LENGTH_SHORT).show()
+            }
+            true
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(toggle.onOptionsItemSelected(item)){
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     fun initRecyclerView() {
